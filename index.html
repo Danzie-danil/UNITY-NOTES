@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shared Notes</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="auth-screen" class="screen">
+  <div class="auth-card">
+    <div class="app-logo">Shared Notes</div>
+    <div class="auth-form">
+      <div id="auth-alert" class="alert hidden"></div>
+      <input id="auth-email" type="email" placeholder="Email">
+      <input id="auth-password" type="password" placeholder="Password">
+      <div class="auth-actions">
+        <button id="btn-login" class="btn primary">Log In</button>
+        <button id="btn-signup" class="btn">Sign Up</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="app-screen" class="screen hidden">
+  <div class="top-bar">
+    <button id="btn-menu" class="icon-btn">
+      <svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>
+    </button>
+    <div class="top-actions">
+      <button id="btn-camera" class="icon-btn">
+        <svg viewBox="0 0 24 24"><path d="M9 3h6l2 3h3v15H4V6h3l2-3zm3 4a6 6 0 100 12 6 6 0 000-12z"/></svg>
+      </button>
+      <button id="btn-new-doc" class="icon-btn green">
+        <svg viewBox="0 0 24 24"><path d="M11 11V4h2v7h7v2h-7v7h-2v-7H4v-2h7z"/></svg>
+      </button>
+    </div>
+  </div>
+  <div id="menu-panel" class="menu-panel hidden">
+    <button id="menu-new-doc" class="menu-item">New Document</button>
+    <button id="menu-signout" class="menu-item">Sign Out</button>
+  </div>
+
+  <div id="view-notes" class="view">
+    <div class="search-section">
+      <div class="search-bar">
+        <svg viewBox="0 0 24 24"><path d="M10 18a8 8 0 106.32-3.16L22 20.5 20.5 22l-5.18-5.68A8 8 0 0010 18zm0-2a6 6 0 110-12 6 6 0 010 12z"/></svg>
+        <input id="search-input" type="text" placeholder="Search">
+      </div>
+      <div class="chips-row" id="chips-row">
+        <button class="chip active" data-chip="All">All</button>
+        <button class="chip" data-chip="Mine">Mine</button>
+        <button class="chip" data-chip="Shared">Shared</button>
+        <button class="chip" data-chip="Today">Today</button>
+        <button class="chip" data-chip="This Week">This Week</button>
+      </div>
+    </div>
+    <ul id="documents-list" class="documents-list"></ul>
+  </div>
+
+  <div id="view-activity" class="view hidden">
+    <div class="placeholder">Recent activity will appear here.</div>
+  </div>
+
+  <div id="view-groups" class="view hidden">
+    <div class="placeholder">Groups and teams (coming soon).</div>
+  </div>
+
+  <div id="view-settings" class="view hidden">
+    <div class="placeholder">Settings (coming soon).</div>
+  </div>
+
+  <div class="bottom-nav">
+    <button id="nav-notes" class="nav-btn active">
+      <svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/></svg>
+      <span>Notes</span>
+    </button>
+    <button id="nav-activity" class="nav-btn">
+      <svg viewBox="0 0 24 24"><path d="M12 2l9 9-9 9-9-9 9-9z"/></svg>
+      <span>Activity</span>
+    </button>
+    <button id="nav-groups" class="nav-btn">
+      <svg viewBox="0 0 24 24"><path d="M4 7h16v2H4zm0 4h16v2H4zm0 4h16v2H4z"/></svg>
+      <span>Groups</span>
+    </button>
+    <button id="nav-settings" class="nav-btn">
+      <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm1 5h-2v6h6v-2h-4z"/></svg>
+      <span>Settings</span>
+    </button>
+  </div>
+
+  <div id="document-detail" class="document-detail hidden">
+    <div class="doc-header">
+      <button id="btn-back" class="icon-btn">
+        <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <div id="document-title" class="doc-title"></div>
+      <button id="btn-doc-info" class="icon-btn">
+        <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm1 15h-2v-6h2v6zm-1-8a1.5 1.5 0 110-3 1.5 1.5 0 010 3z"/></svg>
+      </button>
+    </div>
+    <div class="doc-title-edit">
+      <input id="document-title-input" class="doc-title-input hidden" type="text" placeholder="Rename document">
+      <div id="document-title-actions" class="doc-title-actions hidden">
+        <button id="title-cancel" class="btn">Cancel</button>
+        <button id="title-save" class="btn primary">Save</button>
+      </div>
+    </div>
+    <div id="doc-info-panel" class="doc-info-panel hidden"></div>
+    <div id="entries-list" class="entries-list"></div>
+    <div class="entry-input">
+      <textarea id="entry-text" rows="2" placeholder="Write a new entry..."></textarea>
+      <div id="entry-error" class="alert hidden"></div>
+      <div class="entry-actions">
+        <span id="char-count">0</span>
+        <button id="btn-add-entry" class="btn primary">Add Entry</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="new-doc-modal" class="modal hidden">
+    <div class="modal-card">
+      <div class="modal-title">New Document</div>
+      <input id="new-doc-title" class="field" type="text" placeholder="Document title">
+      <div id="new-doc-error" class="alert hidden"></div>
+      <div class="modal-actions">
+        <button id="new-doc-cancel" class="btn">Cancel</button>
+        <button id="new-doc-create" class="btn primary">Create</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="quick-note-modal" class="modal hidden">
+    <div class="modal-card">
+      <div class="modal-title">Quick Note</div>
+      <textarea id="quick-note-text" rows="3" placeholder="Write a quick note..."></textarea>
+      <div id="quick-note-error" class="alert hidden"></div>
+      <div class="modal-actions">
+        <button id="quick-note-cancel" class="btn">Cancel</button>
+        <button id="quick-note-add" class="btn primary">Add</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="app.js"></script>
+</body>
+</html>
